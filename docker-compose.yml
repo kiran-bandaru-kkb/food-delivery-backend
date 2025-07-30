@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: food_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: food_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  user_service:
+    build: ./user_service
+    ports:
+      - "8001:8000"
+    env_file:
+      - ./user_service/.env
+    depends_on:
+      - postgres
+
+  restaurant_service:
+    build: ./restaurant_service
+    ports:
+      - "8002:8000"
+    env_file:
+      - ./restaurant_service/.env
+    depends_on:
+      - postgres
+
+  delivery_service:
+    build: ./delivery_service
+    ports:
+      - "8003:8000"
+    env_file:
+      - ./delivery_service/.env
+    depends_on:
+      - postgres
