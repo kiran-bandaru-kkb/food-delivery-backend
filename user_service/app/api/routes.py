@@ -1,10 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
-from app.services.order_service import create_order, rate_order
+from app.services.order_services import create_order, rate_order
 from app.schemas.order import OrderCreate, OrderOut, OrderRating
 import httpx
 from app.core.config import settings
+from fastapi import APIRouter, Depends, status
+from sqlalchemy.orm import Session
+from app.schemas.user import UserCreate, UserOut
+from app.services.user_services import create_user
 
 router = APIRouter()
 
@@ -14,6 +18,10 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@router.post("/users/", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+def register_user(user: UserCreate, db: Session = Depends(get_db)):
+    return create_user(db, user)
 
 @router.post("/order", response_model=OrderOut)
 def place_order(order: OrderCreate, db: Session = Depends(get_db)):

@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
 from app import models, schemas
+from app.schemas.order import OrderCreate
 
-def create_order(db: Session, order: schemas.order.OrderCreate):
+def create_order(db: Session, order: OrderCreate):
     db_order = models.order.Order(
         user_id=order.user_id,
         restaurant_id=order.restaurant_id

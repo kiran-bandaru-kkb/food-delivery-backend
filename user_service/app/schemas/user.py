@@ -10,4 +10,7 @@ class UserOut(BaseModel):
     email: str
 
     class Config:
+        def __init__(self):
+            pass
+
         orm_mode = True
