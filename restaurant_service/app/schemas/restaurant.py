@@ -9,7 +9,11 @@ class RestaurantCreate(BaseModel):
 
 class RestaurantOut(RestaurantCreate):
     id: str
+
     class Config:
+        def __init__(self):
+            pass
+
         orm_mode = True
 
 class RestaurantUpdate(BaseModel):
